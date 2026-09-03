@@ -17,68 +17,56 @@
 
 ---
 
-┌─────────────────────────────────────────────────────────────────┐
-│                        SIGES ECOSYSTEM                          │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │                META MODELADOR (Flask)                     │  │
-│  │         Central Configuration Hub & Brain                 │  │
-│  │    - Define rubros, entidades, campos                      │  │
-│  │  - Genera tablas físicas en PostgreSQL                   │  │
-│  │  - Expone API REST para los módulos                     │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│                              │                                   │
-│              ┌───────────────┼───────────────┐                  │
-│              │               │               │                  │
-│              ▼               ▼               ▼                  │
-│  ┌───────────────────┐ ┌───────────────────┐ ┌───────────────┐  │
-│  │        DSS         │ │    INVENTARIO     │ │  FACTURACIÓN  │  │
-│  │   (Laravel)        │ │    (Flask)        │ │  (Laravel)    │  │
-│  │  Dashboards, KPIs, │ │  Productos,       │ │  Clientes,    │  │
-│  │  Métricas,         │ │  Seriales, Stock  │ │  Facturas,    │  │
-│  │  Reportes PDF      │ │  API REST         │ │  Integración  │  │
-│  └───────────────────┘ └───────────────────┘ └───────────────┘  │
-│                              │                                   │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │            SHARED INFRASTRUCTURE                          │  │
-│  │   Redis (Cache) · RabbitMQ (Events) · JWT (Auth)        │ │
-│  └───────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
+## 🏛️ Arquitectura General
 
-text
+```mermaid
+graph TB
+    subgraph SIGES["SIGES ECOSYSTEM"]
+        MM["META MODELADOR (Flask)<br>Central Configuration Hub & Brain<br>- Define rubros, entidades, campos<br>- Genera tablas físicas en PostgreSQL<br>- Expone API REST para los módulos"]
 
----
+        DSS["DSS (Laravel)<br>Dashboards, KPIs, Métricas<br>Reportes PDF"]
 
-## 🧩 Módulos
+        INV["INVENTARIO (Flask)<br>Productos, Seriales, Stock<br>API REST"]
 
-| Módulo | Tecnología | Función |
-|:---|:---|:---|
-| **Meta Modelador** | Flask + PostgreSQL | Cerebro central: define rubros, entidades y campos, genera tablas físicas |
-| **DSS** | Laravel + MySQL | Dashboards interactivos, KPIs dinámicos, gráficas, reportes PDF |
-| **Inventario** | Flask + PostgreSQL | Gestión de productos, seriales, stock, movimientos |
-| **Facturación** | Laravel | Emisión de facturas, registro de ventas, sincronización con inventario y DSS |
+        FAC["FACTURACIÓN (Laravel)<br>Clientes, Facturas<br>Integración"]
 
----
+        INFRA["SHARED INFRASTRUCTURE<br>Redis (Cache) · RabbitMQ (Events) · JWT (Auth)"]
+    end
 
-## 🚀 Tecnologías
+    MM --> DSS
+    MM --> INV
+    MM --> FAC
 
-| Capa | Tecnología | Versión |
-|:---|:---|:---|
-| **Backend (DSS)** | Laravel | 11.x |
-| **Backend (Meta/Inv)** | Flask | 2.3.x |
-| **Base de Datos (DSS)** | MySQL | 8.0 |
-| **Base de Datos (Meta/Inv)** | PostgreSQL | 15+ |
-| **Caché / Colas** | Redis / RabbitMQ | 7.x |
-| **Frontend** | Blade + Livewire + Alpine.js | — |
-| **Gráficos** | Chart.js | 4.4 |
-| **Contenedores** | Docker / Docker Compose | — |
+    DSS -.-> INFRA
+    INV -.-> INFRA
+    FAC -.-> INFRA
 
----
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef infra fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+    classDef mod fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    
+    class DSS,INV,FAC mod;
+    class INFRA infra;
 
-## 📦 Instalación y Despliegue (Docker)
-
-### 1. Clonar el repositorio
-```bash
+🧩 Módulos
+Módulo	Tecnología	Función
+Meta Modelador	Flask + PostgreSQL	Cerebro central: define rubros, entidades y campos, genera tablas físicas
+DSS	Laravel + MySQL	Dashboards interactivos, KPIs dinámicos, gráficas, reportes PDF
+Inventario	Flask + PostgreSQL	Gestión de productos, seriales, stock, movimientos
+Facturación	Laravel	Emisión de facturas, registro de ventas, sincronización con inventario y DSS
+🚀 Tecnologías
+Capa	Tecnología	Versión
+Backend (DSS)	Laravel	11.x
+Backend (Meta/Inv)	Flask	2.3.x
+Base de Datos (DSS)	MySQL	8.0
+Base de Datos (Meta/Inv)	PostgreSQL	15+
+Caché / Colas	Redis / RabbitMQ	7.x
+Frontend	Blade + Livewire + Alpine.js	—
+Gráficos	Chart.js	4.4
+Contenedores	Docker / Docker Compose	—
+📦 Instalación y Despliegue (Docker)
+1. Clonar el repositorio
+bash
 git clone https://github.com/D4NEST/SIGES.git
 cd SIGES
 2. Configurar variables de entorno
@@ -120,8 +108,6 @@ Fase 6	Pruebas, optimización, despliegue	⏳ En planificación
 El plan completo de requisitos, diseño y tareas se encuentra en .kiro/specs/siges-multi-module-integration/.
 
 🛠️ Desarrollo Local (Sin Docker)
-Si prefieres desarrollar sin Docker, cada módulo se ejecuta de forma independiente:
-
 DSS (Laravel)
 bash
 cd dss/centrodemetricas
@@ -168,4 +154,9 @@ Asegúrate de que tus cambios mantengan la coherencia de estilo y pasen las prue
 
 📄 Licencia
 Este proyecto es de uso privado. Todos los derechos reservados.
+
+📬 Contacto
+Autor: Néstor Patiño
+GitHub: @D4NEST
+Correo: danestsantos@gmail.com
 
