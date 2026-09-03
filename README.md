@@ -23,7 +23,7 @@
 │  ┌───────────────────────────────────────────────────────────┐  │
 │  │                META MODELADOR (Flask)                     │  │
 │  │         Central Configuration Hub & Brain                 │  │
-│  │  - Define rubros, entidades, campos                      │  │
+│  │    - Define rubros, entidades, campos                      │  │
 │  │  - Genera tablas físicas en PostgreSQL                   │  │
 │  │  - Expone API REST para los módulos                     │  │
 │  └───────────────────────────────────────────────────────────┘  │
@@ -41,7 +41,7 @@
 │                              │                                   │
 │  ┌───────────────────────────────────────────────────────────┐  │
 │  │            SHARED INFRASTRUCTURE                          │  │
-│  │   Redis (Cache) · RabbitMQ (Events) · JWT (Auth)        │  │
+│  │   Redis (Cache) · RabbitMQ (Events) · JWT (Auth)        │ │
 │  └───────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 
