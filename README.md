@@ -17,34 +17,32 @@
 
 ---
 
-## 🏛️ Arquitectura General
-┌─────────────────────────────────────────────────────────────────┐
-│ SIGES ECOSYSTEM │
-├─────────────────────────────────────────────────────────────────┤
-│ ┌───────────────────────────────────────────────────────────┐ │
-│ │ META MODELADOR (Flask) │ │
-│ │ Central Configuration Hub & Brain │ │
-│ │ - Define rubros, entidades, campos │ │
-│ │ - Genera tablas físicas en PostgreSQL │ │
-│ │ - Expone API REST para los módulos │ │
-│ └───────────────────────────────────────────────────────────┘ │
-│ │ │
-│ ┌──────────────┼──────────────┐ │
-│ │ │ │ │
-│ ▼ ▼ ▼ │
-│ ┌───────────────────┐ ┌───────────────────┐ ┌───────────────┐│
-│ │ DSS │ │ INVENTARIO │ │ FACTURACIÓN ││
-│ │ (Laravel) │ │ (Flask) │ │ (Laravel) ││
-│ │ Dashboards, KPIs, │ │ Productos, │ │ Clientes, ││
-│ │ Métricas, │ │ Seriales, Stock │ │ Facturas, ││
-│ │ Reportes PDF │ │ API REST │ │ Integración ││
-│ └───────────────────┘ └───────────────────┘ └───────────────┘│
-│ │ │
-│ ┌───────────────────────────────────────────────────────────┐ │
-│ │ SHARED INFRASTRUCTURE │ │
-│ │ Redis (Cache) · RabbitMQ (Events) · JWT (Auth) │ │
-│ └───────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph ECOSISTEMA[SIGES ECOSYSTEM]
+        MM[META MODELADOR (Flask)<br/>Central Configuration Hub & Brain<br/>- Define rubros, entidades, campos<br/>- Genera tablas físicas en PostgreSQL<br/>- Expone API REST para los módulos]
+        
+        DSS[DSS (Laravel)<br/>Dashboards, KPIs, Métricas, Reportes PDF]
+        INV[INVENTARIO (Flask)<br/>Productos, Seriales, Stock, API REST]
+        FAC[FACTURACIÓN (Laravel)<br/>Clientes, Facturas, Integración]
+        
+        INFRA[SHARED INFRASTRUCTURE<br/>Redis (Cache) · RabbitMQ (Events) · JWT (Auth)]
+    end
+
+    MM --> DSS
+    MM --> INV
+    MM --> FAC
+    
+    DSS --> INFRA
+    INV --> INFRA
+    FAC --> INFRA
+
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef infra fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+    classDef mod fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    
+    class DSS,INV,FAC mod;
+    class INFRA infra;
 
 text
 
