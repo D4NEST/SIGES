@@ -1,0 +1,68 @@
+/* Tailwind CSS directives (no lint warnings) */
+@import "tailwindcss/base";
+@import "tailwindcss/components"; 
+@import "tailwindcss/utilities";
+
+/* Variables CSS personalizadas */
+@import './variables.css';
+
+/* Componentes CSS organizados */
+@import './components/layouts.css';
+@import './components/forms.css';
+@import './components/tables.css';
+@import './components/navigation.css';
+
+/* Optimizaciones de performance */
+@import './performance.css';
+
+/* Temas - IMPORTANTE: light-theme debe ir primero */
+@import './themes/light-theme.css';
+@import './themes/dark-theme.css';
+
+/* ============================================= */
+/* MEJORAS PARA LA ESTÉTICA GLASS */
+/* ============================================= */
+
+/* Header translúcido */
+.header,
+header,
+.dashboard-header,
+nav {
+    background: rgba(10, 10, 20, 0.65) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Asegurar que el header en móvil también sea glass */
+nav .md\:hidden {
+    background: rgba(10, 10, 20, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Contenedores de gráficos */
+.relative.rounded-xl.border-white\/10 {
+    background: rgba(15, 15, 25, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* Layout cards con glass */
+.layout-card {
+    background: rgba(15, 15, 25, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Contenedor glass para gráficos */
+.glass-container {
+    background: rgba(15, 15, 25, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+.dark .glass-container {
+    background: rgba(15, 15, 25, 0.6) !important;
+}

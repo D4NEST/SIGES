@@ -1,0 +1,192 @@
+/* 
+ * Tema Claro
+ * Configuraciones específicas para el tema claro
+ * Basado en variables CSS definidas en variables.css
+ */
+
+/* Aplicar variables de tema claro por defecto */
+:root {
+  /* Variables específicas del tema claro */
+  --theme-background: var(--bg-light);
+  --theme-surface: var(--bg-light-secondary);
+  --theme-surface-elevated: var(--bg-light-tertiary);
+  
+  --theme-text-primary: var(--text-primary-light);
+  --theme-text-secondary: var(--text-secondary-light);
+  --theme-text-tertiary: var(--text-tertiary-light);
+  --theme-text-inverse: var(--text-inverse-light);
+  
+  --theme-border: var(--border-light);
+  --theme-border-hover: var(--border-light-hover);
+  --theme-border-focus: var(--border-light-focus);
+  
+  --theme-shadow: var(--shadow-md);
+  --theme-shadow-elevated: var(--shadow-lg);
+  
+  /* Estados específicos del tema claro */
+  --theme-success: #10b981;
+  --theme-warning: #f59e0b;
+  --theme-error: #ef4444;
+  --theme-info: #3b82f6;
+  
+  --theme-success-bg: #d1fae5;
+  --theme-warning-bg: #fef3c7;
+  --theme-error-bg: #fee2e2;
+  --theme-info-bg: #dbeafe;
+  
+  --theme-success-text: #065f46;
+  --theme-warning-text: #92400e;
+  --theme-error-text: #991b1b;
+  --theme-info-text: #1e40af;
+}
+
+/* Utilidades específicas del tema claro */
+.theme-light {
+  background-color: var(--theme-background);
+  color: var(--theme-text-primary);
+}
+
+.theme-light .surface {
+  background-color: var(--theme-surface);
+}
+
+.theme-light .surface--elevated {
+  background-color: var(--theme-surface-elevated);
+  box-shadow: var(--theme-shadow);
+}
+
+.theme-light .text-primary {
+  color: var(--theme-text-primary);
+}
+
+.theme-light .text-secondary {
+  color: var(--theme-text-secondary);
+}
+
+.theme-light .text-tertiary {
+  color: var(--theme-text-tertiary);
+}
+
+.theme-light .border {
+  border-color: var(--theme-border);
+}
+
+.theme-light .border--hover:hover {
+  border-color: var(--theme-border-hover);
+}
+
+.theme-light .border--focus:focus {
+  border-color: var(--theme-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Estados en tema claro */
+.theme-light .state-success {
+  background-color: var(--theme-success-bg);
+  color: var(--theme-success-text);
+  border-color: var(--theme-success);
+}
+
+.theme-light .state-warning {
+  background-color: var(--theme-warning-bg);
+  color: var(--theme-warning-text);
+  border-color: var(--theme-warning);
+}
+
+.theme-light .state-error {
+  background-color: var(--theme-error-bg);
+  color: var(--theme-error-text);
+  border-color: var(--theme-error);
+}
+
+.theme-light .state-info {
+  background-color: var(--theme-info-bg);
+  color: var(--theme-info-text);
+  border-color: var(--theme-info);
+}
+
+/* Componentes específicos del tema claro */
+.theme-light .card {
+  background-color: white;
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow);
+}
+
+.theme-light .card:hover {
+  box-shadow: var(--theme-shadow-elevated);
+}
+
+.theme-light .button--primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.theme-light .button--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.theme-light .button--secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.theme-light .button--secondary:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+.theme-light .button--outline {
+  background-color: transparent;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-primary);
+}
+
+.theme-light .button--outline:hover {
+  background-color: var(--theme-surface);
+}
+
+/* Ajustes para contraste WCAG AA en tema claro */
+.theme-light .contrast-aa {
+  color: var(--text-primary-light);
+}
+
+.theme-light .contrast-aa-bg {
+  background-color: var(--bg-light);
+}
+
+/* Utilidades de elevación para tema claro */
+.theme-light .elevation-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .elevation-2 {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .elevation-3 {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Transiciones suaves para cambios de tema */
+.theme-transition {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+/* Responsive adjustments para tema claro */
+@media (max-width: 768px) {
+  .theme-light .card {
+    border-radius: var(--border-radius-md);
+  }
+}
+
+/* Ajustes de impresión para tema claro */
+@media print {
+  .theme-light {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .theme-light .card {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+  }
+}

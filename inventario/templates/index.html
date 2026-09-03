@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0066ff">
+    <title>Soluciones Lógicas - Inventario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Anime.js para animaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        /* ESTILOS MEJORADOS PARA CAMPOS DE LOGIN */
+        .login-form .form-group label {
+            background: var(--color-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .login-form .form-control {
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .login-form .form-control:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px 30px;
+            background: var(--color-gradient);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+            background: var(--color-gradient-hover);
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* SISTEMA DE PANTALLAS FIX */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #loginScreen.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: var(--color-bg);
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 420px;
+        }
+        
+        /* ESTILOS PARA NUEVA TABLA - CORREGIDOS */
+        .marca-modelo-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .marca-text {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        
+        .modelo-text {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+        
+        .sku-display {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            display: inline-block;
+        }
+        
+        .stock-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 140px;
+            position: relative;
+            border: 2px solid;
+        }
+
+        .stock-display:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stock-agotado {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: rgba(255, 68, 68, 0.3);
+            color: var(--color-danger);
+        }
+
+        .stock-bajo {
+            background: rgba(255, 170, 0, 0.1);
+            border-color: rgba(255, 170, 0, 0.3);
+            color: var(--color-warning);
+        }
+
+        .stock-medio {
+            background: rgba(255, 255, 0, 0.1);
+            border-color: rgba(255, 255, 0, 0.3);
+            color: #ffcc00;
+        }
+
+        .stock-normal {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: var(--color-success);
+        }
+
+        .stock-icon {
+            font-size: 16px;
+            font-weight: bold;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: currentColor;
+            color: white;
+        }
+
+        .stock-agotado .stock-icon { background: var(--color-danger); }
+        .stock-bajo .stock-icon { background: var(--color-warning); }
+        .stock-medio .stock-icon { background: #ffcc00; }
+        .stock-normal .stock-icon { background: var(--color-success); }
+
+        .stock-number {
+            font-size: 22px;
+            font-weight: 800;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .stock-label {
+            font-size: 11px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stock-eye {
+            margin-left: auto;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .stock-display:hover .stock-eye {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .stock-detalle {
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            text-align: center;
+        }
+
+        /* DISTRIBUCIÓN DE ESTADOS - IMPORTANTE: Esta columna faltaba */
+        .distribucion-estados {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-width: 200px;
+        }
+
+        .estado-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            width: fit-content;
+            transition: var(--transition);
+        }
+
+        .estado-badge:hover {
+            transform: translateX(3px);
+        }
+
+        .estado-almacen {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--color-success);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .estado-instalado {
+            background: rgba(0, 102, 255, 0.15);
+            color: var(--color-primary);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .estado-danado {
+            background: rgba(255, 68, 68, 0.15);
+            color: var(--color-danger);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+        }
+
+        .estado-retirado {
+            background: rgba(255, 170, 0, 0.15);
+            color: var(--color-warning);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+
+        /* ACCIONES RÁPIDAS */
+        .acciones-rapidas {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .btn-accion {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--border-radius-sm);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .btn-accion:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-agregar {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--color-success);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .btn-agregar:hover {
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        .btn-editar {
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--color-primary);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+        }
+
+        .btn-editar:hover {
+            background: rgba(0, 102, 255, 0.2);
+        }
+
+        .btn-eliminar {
+            background: rgba(255, 68, 68, 0.1);
+            color: var(--color-danger);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        .btn-eliminar:hover {
+            background: rgba(255, 68, 68, 0.2);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .stock-display {
+                min-width: 120px;
+                padding: 8px;
+            }
+            
+            .stock-number {
+                font-size: 18px;
+            }
+            
+            .distribucion-estados {
+                max-width: 150px;
+            }
+            
+            .estado-badge {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .btn-accion {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        /* ESTILOS EXISTENTES MANTENIDOS */
+        .loading {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ESTILOS PARA REPORTE DE IMPRESIÓN */
+        .print-report {
+            display: none;
+        }
+
+        @media print {
+            /* Reset completo para impresión */
+            * {
+                box-sizing: border-box;
+            }
+            
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            
+            /* Ocultar TODO excepto el reporte */
+            body > *:not(.print-report) {
+                display: none !important;
+            }
+            
+            #app,
+            #loginScreen,
+            #dashboardScreen,
+            .dashboard-header,
+            .main-content,
+            .screen,
+            .modal,
+            header,
+            nav,
+            footer:not(.print-footer) {
+                display: none !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Mostrar SOLO el reporte */
+            .print-report {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                background: white !important;
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                height: auto !important;
+            }
+            
+            .print-report * {
+                visibility: visible !important;
+            }
+            
+            /* Contenedor principal del reporte */
+            .print-report {
+                padding: 15mm !important;
+            }
+            
+            .print-header {
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 3px solid #333;
+                padding-bottom: 12px;
+                page-break-after: avoid;
+            }
+            
+            .print-header h1 {
+                color: #333;
+                font-size: 22px;
+                margin: 0 0 8px 0;
+                font-weight: bold;
+            }
+            
+            .print-header .company-info {
+                margin-top: 8px;
+                font-size: 11px;
+                color: #666;
+                line-height: 1.6;
+            }
+            
+            .print-stats {
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: 20px;
+                background: #f5f5f5;
+                padding: 12px;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+            
+            .print-stat {
+                text-align: center;
+                flex: 1;
+            }
+            
+            .print-stat-value {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 4px;
+            }
+            
+            .print-stat-label {
+                font-size: 9px;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 15px;
+                font-size: 8px;
+                table-layout: fixed;
+            }
+            
+            .print-table th,
+            .print-table td {
+                border: 1px solid #ccc;
+                padding: 4px 3px;
+                text-align: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            /* Anchos específicos para cada columna */
+            .print-table th:nth-child(1),
+            .print-table td:nth-child(1) { width: 10%; } /* Marca */
+            
+            .print-table th:nth-child(2),
+            .print-table td:nth-child(2) { width: 12%; } /* Modelo */
+            
+            .print-table th:nth-child(3),
+            .print-table td:nth-child(3) { width: 10%; } /* SKU */
+            
+            .print-table th:nth-child(4),
+            .print-table td:nth-child(4) { width: 6%; text-align: center; } /* Total */
+            
+            .print-table th:nth-child(5),
+            .print-table td:nth-child(5) { width: 6%; text-align: center; } /* Almacén */
+            
+            .print-table th:nth-child(6),
+            .print-table td:nth-child(6) { width: 6%; text-align: center; } /* Instalado */
+            
+            .print-table th:nth-child(7),
+            .print-table td:nth-child(7) { width: 6%; text-align: center; } /* Dañado */
+            
+            .print-table th:nth-child(8),
+            .print-table td:nth-child(8) { width: 6%; text-align: center; } /* Retirado */
+            
+            .print-table th:nth-child(9),
+            .print-table td:nth-child(9) { width: 38%; } /* Seriales */
+            
+            .print-table th {
+                background-color: #e8e8e8;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: 7px;
+                letter-spacing: 0.3px;
+                padding: 5px 3px;
+            }
+            
+            .print-table tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            
+            .print-table tbody tr {
+                page-break-inside: avoid;
+            }
+            
+            .print-footer {
+                margin-top: 20px;
+                text-align: center;
+                font-size: 8px;
+                color: #999;
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+                page-break-before: avoid;
+            }
+            
+            .seriales-list {
+                font-size: 7px;
+                word-wrap: break-word;
+                line-height: 1.2;
+                white-space: normal;
+            }
+            
+            /* Optimización de página */
+            @page {
+                margin: 1.5cm;
+                size: A4;
+            }
+            
+            /* Evitar saltos de página innecesarios */
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            
+            table {
+                page-break-inside: auto;
+            }
+            
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            
+            thead {
+                display: table-header-group;
+            }
+            
+            tfoot {
+                display: table-footer-group;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="login-container">
+                <div class="logo-animation">
+                    <img src="/static/images/logopeneges.png" alt="Soluciones Lógicas" class="logo" id="animatedLogo">
+                    <h1 class="company-name">Soluciones Lógicas</h1>
+                </div>
+                
+                <form class="login-form" id="loginForm">
+                    <h2>Sistema de Gestión de Inventario</h2>
+                    
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> USUARIO</label>
+                        <input type="text" id="username" name="username" class="form-control" 
+                               placeholder="Ingresa tu usuario" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> CONTRASEÑA</label>
+                        <input type="password" id="password" name="password" class="form-control" 
+                               placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> INICIAR SESIÓN
+                    </button>
+                    
+                    <div id="loginError" class="alert alert-danger" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i> Usuario o contraseña incorrectos
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboardScreen" class="screen">
+            <header class="dashboard-header">
+                <div class="header-logo">
+                    <img src="/static/images/logopeneges.png" alt="Soluciones Lógicas" class="logo" id="dashboardLogo">
+                    <div class="header-titles">
+                        <h1>Soluciones Lógicas</h1>
+                        <p>Gestión de Inventario</p>
+                    </div>
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userInitial">A</div>
+                    <span id="userName">Administrador</span>
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="container">
+                    <div class="page-title">
+                        <h1><i class="fas fa-boxes-stacked"></i> Gestión de Inventario</h1>
+                        <div class="header-buttons">
+                            <button class="btn" id="printReportBtn" style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);" title="Reporte completo con todos los detalles">
+                                <i class="fas fa-print"></i> Imprimir Reporte
+                            </button>
+                            <button class="btn" id="addItemBtn">
+                                <i class="fas fa-barcode"></i> Registrar Serial
+                            </button>
+                            <button class="btn btn-success" id="addProductBtn">
+                                <i class="fas fa-plus-circle"></i> Producto Nuevo
+                            </button>
+                            <button class="btn" id="addMultipleStockBtn" style="display: none;">
+                                <i class="fas fa-layer-group"></i> Agregar Stock
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Estadísticas -->
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalItems">0</div>
+                            <div class="stat-label"><i class="fas fa-cubes"></i> Total de Modelos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="lowStockItems">0</div>
+                            <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Stock Bajo</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalValue">0</div>
+                            <div class="stat-label"><i class="fas fa-boxes"></i> Total Seriales</div>
+                        </div>
+                    </div>
+
+                    <!-- TABLA DE INVENTARIO CORREGIDA - 5 COLUMNAS -->
+                    <div class="card">
+                        <div class="search-bar">
+                            <input type="text" id="searchInput" class="form-control" 
+                                   placeholder="Buscar por marca, modelo o SKU...">
+                            <button class="btn" id="searchBtn">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="inventoryTable">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-tag"></i> Marca</th>
+                                        <th><i class="fas fa-cube"></i> Modelo</th>
+                                        <th><i class="fas fa-barcode"></i> Código Único (SKU)</th>
+                                        <th><i class="fas fa-boxes"></i> Stock</th>
+                                        <!-- COLUMNA FALTANTE AÑADIDA -->
+                                        <th><i class="fas fa-chart-pie"></i> Distribución por Estado</th>
+                                        <th><i class="fas fa-cogs"></i> Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTableBody">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; padding: 40px;">
+                                            <div class="loading"></div> Cargando inventario...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal: Registrar Serial (EXISTENTE - MANTENER) -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-barcode"></i> Registrar Nuevo Serial</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="serialForm">
+                <div style="padding: 25px;">
+                    <div class="form-group">
+                        <label for="componentType">
+                            <i class="fas fa-tags"></i> Categoría del Producto
+                        </label>
+                        <select id="componentType" class="form-control" required>
+                            <option value="">-- Selecciona una categoría --</option>
+                        </select>
+                        <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                            Primero selecciona la categoría del producto
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serialProduct">
+                            <i class="fas fa-cube"></i> Modelo Específico
+                        </label>
+                        <select id="serialProduct" class="form-control" required disabled>
+                            <option value="">-- Selecciona un modelo (elige categoría primero) --</option>
+                        </select>
+                        <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                            Elige el modelo específico al que pertenece este serial
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serialCode">
+                            <i class="fas fa-barcode"></i> Código Único de Serial
+                        </label>
+                        <input type="text" id="serialCode" class="form-control" 
+                               placeholder="Ej: SN-LEN-T14-001, SRL-CISCO-2900-001" 
+                               required>
+                        <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                            Ingresa el código único del serial. Este identificador no se puede repetir.
+                        </small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block" id="saveSerialBtn">
+                        <i class="fas fa-save"></i> Registrar Serial en Inventario
+                    </button>
+                    
+                    <div id="serialMessage" class="alert" style="display: none; margin-top: 20px;"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Agregar Múltiples Unidades (NUEVO) -->
+    <div class="modal" id="addMultipleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-layer-group"></i> Agregar Múltiples Unidades</h2>
+                <button class="close-btn" id="closeMultipleModal">&times;</button>
+            </div>
+            <div style="padding: 25px;">
+                <div class="alert alert-info" style="margin-bottom: 20px;">
+                    <i class="fas fa-info-circle"></i> 
+                    Agregar varias unidades del mismo producto de una vez
+                </div>
+                
+                <div class="form-group">
+                    <label for="selectProductMultiple">
+                        <i class="fas fa-cube"></i> Seleccionar Producto
+                    </label>
+                    <select id="selectProductMultiple" class="form-control" required>
+                        <option value="">-- Selecciona un producto --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cantidadUnidades">
+                        <i class="fas fa-boxes"></i> Cantidad de Unidades
+                    </label>
+                    <input type="number" id="cantidadUnidades" class="form-control" 
+                           min="1" max="50" value="1" required>
+                    <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                        Número de unidades físicas a agregar (máx. 50)
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="estadoInicialMultiple">
+                        <i class="fas fa-info-circle"></i> Estado Inicial
+                    </label>
+                    <select id="estadoInicialMultiple" class="form-control">
+                        <option value="ALMACEN">🟢 Almacén (Disponible)</option>
+                        <option value="INSTALADO">🔵 Instalado (En uso)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prefijoSerialMultiple">
+                        <i class="fas fa-tag"></i> Prefijo para Seriales (Opcional)
+                    </label>
+                    <input type="text" id="prefijoSerialMultiple" class="form-control" 
+                           placeholder="Ej: LOTE1, COMPRA2024...">
+                    <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                        Se generarán seriales automáticos: PREFIJO-SKU-001, PREFIJO-SKU-002, etc.
+                    </small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="button" class="btn btn-success" style="flex: 1;" id="confirmAddMultiple">
+                        <i class="fas fa-plus-circle"></i> Agregar Unidades
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cancelAddMultiple">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+                
+                <div id="addMultipleMessage" class="alert" style="display: none; margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Producto Nuevo (EXISTENTE - MANTENER) -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus-circle"></i> Registrar Producto Nuevo</h2>
+                <button class="close-btn" id="closeProductModal">&times;</button>
+            </div>
+            <form id="productForm">
+                <div style="padding: 25px;">
+                    <div class="form-group">
+                        <label for="productName">
+                            <i class="fas fa-tag"></i> Nombre del Producto
+                        </label>
+                        <input type="text" id="productName" class="form-control" 
+                               placeholder="Ej: Laptop Lenovo ThinkPad T14, Router Cisco 2900, Cable Red CAT6..." 
+                               required>
+                        <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                            Describe claramente el producto para identificarlo fácilmente
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productMarca">
+                            <i class="fas fa-tag"></i> Marca
+                        </label>
+                        <input type="text" id="productMarca" class="form-control" 
+                               placeholder="Ej: Lenovo, Cisco, HP, Dell..." 
+                               required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productModelo">
+                            <i class="fas fa-cube"></i> Modelo
+                        </label>
+                        <input type="text" id="productModelo" class="form-control" 
+                               placeholder="Ej: ThinkPad T14, Catalyst 2900, ProBook 450..." 
+                               required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">
+                            <i class="fas fa-align-left"></i> Descripción (Opcional)
+                        </label>
+                        <textarea id="productDescription" class="form-control" 
+                                  placeholder="Especificaciones técnicas, características importantes..."
+                                  rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="position: relative;">
+                        <label for="productTypeSelect">
+                            <i class="fas fa-folder"></i> Categoría del Producto
+                        </label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select id="productTypeSelect" class="form-control" required style="flex: 1;">
+                                <option value="">Cargando categorías...</option>
+                            </select>
+                            <button type="button" id="newCategoryBtn" class="btn btn-sm btn-outline" 
+                                    style="white-space: nowrap; padding: 8px 12px;">
+                                <i class="fas fa-plus"></i> Nueva Categoría
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productSKU">
+                            <i class="fas fa-barcode"></i> Código SKU/Referencia
+                        </label>
+                        <input type="text" id="productSKU" class="form-control" 
+                               placeholder="Ej: LAP-LEN-T14, ROUTER-CISCO-2900, CABLE-CAT6-3M" 
+                               required>
+                        <small style="color: var(--color-text-secondary); font-size: 12px; margin-top: 5px;">
+                            Código único para identificar el producto en el inventario
+                        </small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block" style="margin-top: 20px;">
+                        <i class="fas fa-save"></i> Guardar Producto
+                    </button>
+                    
+                    <div id="productMessage" class="alert" style="display: none; margin-top: 20px;"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal: Crear Nueva Categoría (EXISTENTE - MANTENER) -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-folder-plus"></i> Crear Nueva Categoría</h2>
+                <button class="close-btn" id="closeCategoryModal">&times;</button>
+            </div>
+            <form id="categoryForm">
+                <div style="padding: 25px;">
+                    <div class="form-group">
+                        <label for="categoryName">
+                            <i class="fas fa-tag"></i> Nombre de la Categoría
+                        </label>
+                        <input type="text" id="categoryName" class="form-control" 
+                               placeholder="Ej: Computadoras, Monitores, Switches..." 
+                               required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block" style="margin-top: 20px;">
+                        <i class="fas fa-save"></i> Crear Categoría
+                    </button>
+                    
+                    <div id="categoryMessage" class="alert" style="display: none; margin-top: 20px;"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal: Gestión de Seriales (EXISTENTE - MANTENER) -->
+    <div class="modal" id="serialsDetailModal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2 id="serialsModalTitle"><i class="fas fa-boxes"></i> Gestión de Seriales</h2>
+                <button class="close-btn" id="closeSerialsModal">&times;</button>
+            </div>
+            <div style="padding: 25px;">
+                <div class="alert alert-info" style="margin-bottom: 20px;">
+                    <i class="fas fa-info-circle"></i> 
+                    Gestiona el estado de los seriales. Los cambios afectarán el stock disponible.
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="serialsTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> ID</th>
+                                <th><i class="fas fa-barcode"></i> Código Serial</th>
+                                <th><i class="fas fa-info-circle"></i> Estado</th>
+                                <th><i class="fas fa-calendar"></i> Fecha Ingreso</th>
+                                <th><i class="fas fa-cogs"></i> Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="serialsTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px;">
+                                    <div class="loading"></div> Cargando seriales...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Panel de acciones rápidas -->
+                <div style="margin-top: 25px; padding: 20px; background: var(--color-bg-card); border-radius: var(--border-radius);">
+                    <h4 style="margin-bottom: 15px; color: var(--color-text);">
+                        <i class="fas fa-bolt"></i> Acciones Rápidas
+                    </h4>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-sm" id="btnMarcarInstalados" style="display: none;">
+                            <i class="fas fa-wrench"></i> Marcar como Instalados
+                        </button>
+                        <button class="btn btn-sm btn-danger" id="btnMarcarDanados" style="display: none;">
+                            <i class="fas fa-times-circle"></i> Marcar como Dañados
+                        </button>
+                        <button class="btn btn-sm btn-warning" id="btnMarcarRetirados" style="display: none;">
+                            <i class="fas fa-truck"></i> Marcar como Retirados
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Cambiar Estado de Serial (EXISTENTE - MANTENER) -->
+    <div class="modal" id="changeStatusModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-exchange-alt"></i> Cambiar Estado del Serial</h2>
+                <button class="close-btn" id="closeStatusModal">&times;</button>
+            </div>
+            <div style="padding: 25px;">
+                <div class="form-group">
+                    <label for="newStatus">
+                        <i class="fas fa-info-circle"></i> Nuevo Estado
+                    </label>
+                    <select id="newStatus" class="form-control" required>
+                        <option value="">-- Selecciona el nuevo estado --</option>
+                        <option value="ALMACEN">🟢 Almacén (Disponible)</option>
+                        <option value="INSTALADO">🔵 Instalado (En uso)</option>
+                        <option value="DAÑADO">🔴 Dañado (No usable)</option>
+                        <option value="RETIRADO">🟡 Retirado (Fuera de servicio)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="statusNotes">
+                        <i class="fas fa-sticky-note"></i> Notas (Opcional)
+                    </label>
+                    <textarea id="statusNotes" class="form-control" 
+                              placeholder="Motivo del cambio, ubicación, observaciones..."
+                              rows="3"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn" id="confirmStatusChange">
+                        <i class="fas fa-check"></i> Confirmar Cambio
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cancelStatusChange">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+                
+                <div id="statusMessage" class="alert" style="display: none; margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REPORTE PARA IMPRESIÓN (OCULTO) -->
+    <div class="print-report" id="printReport">
+        <div class="print-header">
+            <h1>REPORTE DE INVENTARIO</h1>
+            <div class="company-info">
+                <strong>Soluciones Lógicas</strong><br>
+                Sistema de Gestión de Inventario<br>
+                <span id="printDate"></span> | Generado por: <span id="printUser"></span>
+            </div>
+        </div>
+        
+        <div class="print-stats" id="printStats">
+            <!-- Estadísticas se llenarán dinámicamente -->
+        </div>
+        
+        <table class="print-table" id="printTable">
+            <thead>
+                <tr>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>SKU</th>
+                    <th>Total</th>
+                    <th>Almacén</th>
+                    <th>Instalado</th>
+                    <th>Dañado</th>
+                    <th>Retirado</th>
+                    <th>Seriales</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody">
+                <!-- Datos se llenarán dinámicamente -->
+            </tbody>
+        </table>
+        
+        <div class="print-footer">
+            <p>Este reporte fue generado automáticamente por el Sistema de Gestión de Inventario de Soluciones Lógicas</p>
+            <p>Fecha de generación: <span id="printFooterDate"></span></p>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+    <script>
+        // CORRECCIÓN TEMPORAL PARA EL LOGIN - ELIMINAR DESPLIEGUE
+        document.addEventListener('DOMContentLoaded', function() {
+            // Asegurar que solo el login esté visible inicialmente
+            document.getElementById('loginScreen').classList.add('active');
+            document.getElementById('dashboardScreen').classList.remove('active');
+            
+            // Animación inicial del login
+            if (typeof anime !== 'undefined') {
+                const timeline = anime.timeline({
+                    duration: 1200,
+                    easing: 'easeOutElastic(1, .8)'
+                });
+
+                timeline
+                .add({
+                    targets: '#animatedLogo',
+                    scale: [0, 1.2, 1],
+                    rotate: '360deg',
+                    opacity: [0, 1],
+                    duration: 1500,
+                })
+                .add({
+                    targets: '.company-name',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 800,
+                }, '-=500')
+                .add({
+                    targets: '.login-form',
+                    opacity: [0, 1],
+                    translateY: [30, 0],
+                    duration: 600,
+                }, '-=300');
+            }
+            
+            console.log('✅ Sistema de pantallas corregido - Sin despliegue no deseado');
+            
+            // Event listeners para el nuevo modal de agregar múltiples
+            const addMultipleBtn = document.getElementById('addMultipleStockBtn');
+            const closeMultipleModal = document.getElementById('closeMultipleModal');
+            const cancelAddMultiple = document.getElementById('cancelAddMultiple');
+            const addMultipleModal = document.getElementById('addMultipleModal');
+            
+            if (addMultipleBtn) {
+                addMultipleBtn.addEventListener('click', function() {
+                    if (addMultipleModal) {
+                        addMultipleModal.style.display = 'flex';
+                        loadProductsForMultipleSelect();
+                    }
+                });
+            }
+            
+            if (closeMultipleModal) {
+                closeMultipleModal.addEventListener('click', function() {
+                    if (addMultipleModal) addMultipleModal.style.display = 'none';
+                });
+            }
+            
+            if (cancelAddMultiple) {
+                cancelAddMultiple.addEventListener('click', function() {
+                    if (addMultipleModal) addMultipleModal.style.display = 'none';
+                });
+            }
+            
+            // Cerrar modal al hacer click fuera
+            window.addEventListener('click', function(e) {
+                if (addMultipleModal && e.target === addMultipleModal) {
+                    addMultipleModal.style.display = 'none';
+                }
+            });
+        });
+        
+        // Función para cargar productos en el select del modal múltiple
+        async function loadProductsForMultipleSelect() {
+            try {
+                const select = document.getElementById('selectProductMultiple');
+                select.innerHTML = '<option value="">Cargando productos...</option>';
+                
+                const response = await fetch('/api/inventario/productos', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const productos = await response.json();
+                    select.innerHTML = '<option value="">-- Selecciona un producto --</option>';
+                    
+                    productos.forEach(producto => {
+                        const option = document.createElement('option');
+                        option.value = producto.producto_id;
+                        option.textContent = `${producto.nombre} (${producto.codigo_sku})`;
+                        select.appendChild(option);
+                    });
+                } else {
+                    select.innerHTML = '<option value="">Error al cargar productos</option>';
+                }
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                document.getElementById('selectProductMultiple').innerHTML = '<option value="">Error de conexión</option>';
+            }
+        }
+        
+        // Función para procesar agregar múltiples unidades
+        document.getElementById('confirmAddMultiple').addEventListener('click', async function() {
+            const productoId = document.getElementById('selectProductMultiple').value;
+            const cantidad = document.getElementById('cantidadUnidades').value;
+            const estado = document.getElementById('estadoInicialMultiple').value;
+            const prefijo = document.getElementById('prefijoSerialMultiple').value.trim();
+            const messageDiv = document.getElementById('addMultipleMessage');
+            
+            if (!productoId) {
+                showMessage(messageDiv, "❌ Por favor selecciona un producto", "danger");
+                return;
+            }
+            
+            if (!cantidad || cantidad < 1 || cantidad > 50) {
+                showMessage(messageDiv, "❌ La cantidad debe ser entre 1 y 50", "danger");
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/inventario/agregar_lote', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        producto_id: parseInt(productoId),
+                        cantidad: parseInt(cantidad),
+                        estado: estado,
+                        prefijo: prefijo || null
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage(messageDiv, `✅ ${result.mensaje}`, "success");
+                    
+                    // Actualizar tabla después de 2 segundos
+                    setTimeout(() => {
+                        if (typeof loadProductosDetallados === 'function') {
+                            loadProductosDetallados();
+                        }
+                        document.getElementById('addMultipleModal').style.display = 'none';
+                        document.getElementById('addMultipleMessage').style.display = 'none';
+                    }, 2000);
+                } else {
+                    showMessage(messageDiv, `❌ ${result.error}`, "danger");
+                }
+            } catch (error) {
+                console.error('Error agregando múltiples unidades:', error);
+                showMessage(messageDiv, "❌ Error de conexión con el servidor", "danger");
+            }
+        });
+        
+        function showMessage(element, message, type) {
+            if (!element) return;
+            
+            element.textContent = message;
+            element.className = `alert alert-${type}`;
+            element.style.display = "block";
+        }
+    </script>
+</body>
+</html>

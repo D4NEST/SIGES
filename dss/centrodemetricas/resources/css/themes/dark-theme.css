@@ -1,0 +1,290 @@
+/* 
+ * Tema Oscuro
+ * Configuraciones específicas para el tema oscuro con contraste WCAG AAA
+ * Basado en variables CSS definidas en variables.css
+ */
+
+/* Aplicar variables de tema oscuro */
+:root[data-theme="dark"],
+.dark {
+  /* Variables específicas del tema oscuro */
+  --theme-background: var(--bg-dark);
+  --theme-surface: var(--bg-dark-secondary);
+  --theme-surface-elevated: var(--bg-dark-tertiary);
+  
+  --theme-text-primary: var(--text-primary-dark);
+  --theme-text-secondary: var(--text-secondary-dark);
+  --theme-text-tertiary: var(--text-tertiary-dark);
+  --theme-text-inverse: var(--text-inverse-dark);
+  
+  --theme-border: var(--border-dark);
+  --theme-border-hover: var(--border-dark-hover);
+  --theme-border-focus: var(--border-dark-focus);
+  
+  --theme-shadow: var(--shadow-dark);
+  --theme-shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  
+  /* Estados específicos del tema oscuro (manteniendo contraste) */
+  --theme-success: #34d399;          /* Verde más claro para mejor contraste */
+  --theme-warning: #fbbf24;          /* Amarillo más claro */
+  --theme-error: #f87171;            /* Rojo más claro */
+  --theme-info: #60a5fa;             /* Azul más claro */
+  
+  --theme-success-bg: rgba(52, 211, 153, 0.2);
+  --theme-warning-bg: rgba(251, 191, 36, 0.2);
+  --theme-error-bg: rgba(248, 113, 113, 0.2);
+  --theme-info-bg: rgba(96, 165, 250, 0.2);
+  
+  --theme-success-text: #a7f3d0;     /* Texto claro para contraste */
+  --theme-warning-text: #fde68a;
+  --theme-error-text: #fecaca;
+  --theme-info-text: #bfdbfe;
+}
+
+/* Utilidades específicas del tema oscuro */
+.theme-dark {
+  background-color: var(--theme-background);
+  color: var(--theme-text-primary);
+}
+
+.theme-dark .surface {
+  background-color: var(--theme-surface);
+}
+
+.theme-dark .surface--elevated {
+  background-color: var(--theme-surface-elevated);
+  box-shadow: var(--theme-shadow);
+}
+
+.theme-dark .text-primary {
+  color: var(--theme-text-primary);
+}
+
+.theme-dark .text-secondary {
+  color: var(--theme-text-secondary);
+}
+
+.theme-dark .text-tertiary {
+  color: var(--theme-text-tertiary);
+}
+
+.theme-dark .border {
+  border-color: var(--theme-border);
+}
+
+.theme-dark .border--hover:hover {
+  border-color: var(--theme-border-hover);
+}
+
+.theme-dark .border--focus:focus {
+  border-color: var(--theme-border-focus);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+/* Estados en tema oscuro (con contraste WCAG AAA) */
+.theme-dark .state-success {
+  background-color: var(--theme-success-bg);
+  color: var(--theme-success-text);
+  border-color: var(--theme-success);
+}
+
+.theme-dark .state-warning {
+  background-color: var(--theme-warning-bg);
+  color: var(--theme-warning-text);
+  border-color: var(--theme-warning);
+}
+
+.theme-dark .state-error {
+  background-color: var(--theme-error-bg);
+  color: var(--theme-error-text);
+  border-color: var(--theme-error);
+}
+
+.theme-dark .state-info {
+  background-color: var(--theme-info-bg);
+  color: var(--theme-info-text);
+  border-color: var(--theme-info);
+}
+
+/* Componentes específicos del tema oscuro */
+.theme-dark .card {
+  background-color: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow);
+}
+
+.theme-dark .card:hover {
+  box-shadow: var(--theme-shadow-elevated);
+}
+
+.theme-dark .button--primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.theme-dark .button--primary:hover {
+  background-color: #2563eb; /* Color ligeramente más claro para hover */
+}
+
+.theme-dark .button--secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.theme-dark .button--secondary:hover {
+  background-color: #4b5563; /* Color más claro para hover */
+}
+
+.theme-dark .button--outline {
+  background-color: transparent;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-primary);
+}
+
+.theme-dark .button--outline:hover {
+  background-color: var(--theme-surface-elevated);
+}
+
+/* Garantizar contraste WCAG AAA para texto en tema oscuro */
+.theme-dark .contrast-aaa {
+  color: var(--text-primary-dark); /* Contraste 15.9:1 con #111827 */
+}
+
+.theme-dark .contrast-aaa-bg {
+  background-color: var(--bg-dark);
+}
+
+.theme-dark .contrast-aa {
+  color: var(--text-secondary-dark); /* Contraste 10.5:1 con #111827 */
+}
+
+/* Utilidades de elevación para tema oscuro */
+.theme-dark .elevation-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.theme-dark .elevation-2 {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.theme-dark .elevation-3 {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Mejoras específicas para legibilidad en modo oscuro */
+.theme-dark .legibility-enhanced {
+  /* Aumentar ligeramente el peso de la fuente para mejor legibilidad */
+  font-weight: var(--font-weight-medium);
+  /* Aumentar ligeramente el espaciado entre letras */
+  letter-spacing: 0.01em;
+}
+
+.theme-dark .list-item {
+  border-bottom: 1px solid var(--theme-border);
+  padding: var(--spacing-md) 0;
+}
+
+.theme-dark .list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark .table-row--highlight {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.theme-dark .table-row--highlight:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+/* Ajustes para íconos en tema oscuro */
+.theme-dark .icon {
+  filter: brightness(1.2); /* Aclarar íconos ligeramente */
+}
+
+.theme-dark .icon--inverse {
+  filter: brightness(0.8); /* Oscurecer íconos invertidos */
+}
+
+/* Ajustes para imágenes en tema oscuro */
+.theme-dark img {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+.theme-dark img:hover {
+  filter: brightness(1) contrast(1.1);
+}
+
+/* Ajustes para código y preformateado */
+.theme-dark code,
+.theme-dark pre {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--theme-border);
+}
+
+/* Transiciones suaves para cambios de tema */
+.theme-transition {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+/* Responsive adjustments para tema oscuro */
+@media (max-width: 768px) {
+  .theme-dark .card {
+    border-radius: var(--border-radius-md);
+  }
+  
+  .theme-dark .list-item {
+    padding: var(--spacing-sm) 0;
+  }
+}
+
+/* Ajustes para alto contraste (WCAG AAA) */
+@media (prefers-contrast: high) {
+  .theme-dark {
+    /* Colores de máximo contraste */
+    --theme-background: #000000;
+    --theme-surface: #111111;
+    --theme-surface-elevated: #222222;
+    
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #e0e0e0;
+    --theme-text-tertiary: #c0c0c0;
+    
+    --theme-border: #444444;
+    --theme-border-hover: #666666;
+    --theme-border-focus: #ffffff;
+    
+    --theme-success: #00ff00;
+    --theme-warning: #ffff00;
+    --theme-error: #ff0000;
+    --theme-info: #0000ff;
+  }
+  
+  .theme-dark .border {
+    border-width: 2px;
+  }
+  
+  .theme-dark .button {
+    border-width: 2px;
+  }
+  
+  .theme-dark .card {
+    border-width: 2px;
+  }
+}
+
+/* Ajustes de impresión para tema oscuro */
+@media print {
+  .theme-dark {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .theme-dark .card {
+    border: 1px solid #333 !important;
+    box-shadow: none !important;
+  }
+  
+  .theme-dark img {
+    filter: none !important;
+  }
+}

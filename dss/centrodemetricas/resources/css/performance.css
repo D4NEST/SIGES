@@ -1,0 +1,492 @@
+/* 
+ * Performance Optimizations
+ * Archivo para optimizaciones de rendimiento y fluidez
+ * Incluye técnicas para 60fps, smooth scrolling y rendering optimizado
+ */
+
+/* ===== OPTIMIZACIONES DE RENDERING ===== */
+
+/* Hardware acceleration para elementos críticos */
+.performance-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  contain: layout style;
+}
+
+/* Evitar layout thrashing */
+.performance-contain--layout {
+  contain: layout;
+}
+
+.performance-contain--paint {
+  contain: paint;
+}
+
+.performance-contain--style {
+  contain: style;
+}
+
+.performance-contain--strict {
+  contain: strict;
+}
+
+/* Will-change optimizado (solo cuando sea necesario) */
+.performance-will-change--transform {
+  will-change: transform;
+}
+
+.performance-will-change--opacity {
+  will-change: opacity;
+}
+
+.performance-will-change--scroll-position {
+  will-change: scroll-position;
+}
+
+/* ===== ANIMACIONES Y TRANSICIONES OPTIMIZADAS ===== */
+
+/* Animaciones con GPU acceleration */
+@keyframes performance-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.performance-fade-in {
+  animation: performance-fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes performance-slide-in {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.performance-slide-in {
+  animation: performance-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Staggered animations */
+.performance-stagger > * {
+  opacity: 0;
+  animation: performance-fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.performance-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.performance-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+.performance-stagger > *:nth-child(3) { animation-delay: 0.15s; }
+.performance-stagger > *:nth-child(4) { animation-delay: 0.2s; }
+.performance-stagger > *:nth-child(5) { animation-delay: 0.25s; }
+.performance-stagger > *:nth-child(6) { animation-delay: 0.3s; }
+.performance-stagger > *:nth-child(7) { animation-delay: 0.35s; }
+.performance-stagger > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* Smooth transitions para propiedades que afectan performance */
+.performance-transition--safe {
+  transition: opacity 0.3s ease,
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.3s ease;
+}
+
+.performance-transition--color {
+  transition: color 0.3s ease,
+              background-color 0.3s ease,
+              border-color 0.3s ease;
+}
+
+/* ===== OPTIMIZACIONES DE SCROLL ===== */
+
+/* Smooth scrolling para toda la página */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimización de scroll performance */
+.performance-scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+  contain: layout style;
+}
+
+.performance-scroll-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.performance-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--border-radius-full);
+}
+
+.performance-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--border-radius-full);
+  transition: background 0.3s ease;
+}
+
+.performance-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color-hover);
+}
+
+/* Dark mode scrollbar */
+.dark .performance-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+}
+
+.dark .performance-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--border-dark-hover);
+}
+
+/* ===== LAYOUT OPTIMIZATIONS ===== */
+
+/* Content-visibility para elementos fuera de pantalla */
+.performance-content-visibility--auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+.performance-content-visibility--hidden {
+  content-visibility: hidden;
+}
+
+/* Optimización de imágenes y media */
+.performance-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+}
+
+.performance-lazy-image {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.performance-lazy-image.loaded {
+  opacity: 1;
+}
+
+/* Background attachment fixed alternative */
+.performance-parallax {
+  position: relative;
+  overflow: hidden;
+}
+
+.performance-parallax__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ===== FONT OPTIMIZATIONS ===== */
+
+/* Font loading optimization */
+.performance-font--loading {
+  font-display: swap;
+  font-weight: var(--font-weight-normal);
+}
+
+.performance-font--loaded {
+  font-weight: var(--font-weight-normal);
+  font-display: block;
+}
+
+/* Font smoothing */
+.performance-font-smoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ===== TOUCH OPTIMIZATIONS ===== */
+
+/* Touch targets size */
+.performance-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--spacing-sm);
+}
+
+/* Touch feedback */
+.performance-touch-feedback:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* ===== LAZY LOADING ===== */
+
+/* Intersection Observer fallback */
+.performance-lazy {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.performance-lazy.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Skeleton loading */
+.performance-skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: performance-skeleton-loading 1.5s infinite;
+  border-radius: var(--border-radius-md);
+}
+
+@keyframes performance-skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ===== MEMORY OPTIMIZATIONS ===== */
+
+/* Reduce memory usage for off-screen elements */
+.performance-offscreen {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  visibility: hidden;
+}
+
+/* Optimize canvas elements */
+.performance-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ===== BROWSER HACKS Y FALLBACKS ===== */
+
+/* Fix for Safari rendering issues */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .performance-safari-fix {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
+
+/* Fix for Firefox rendering */
+@-moz-document url-prefix() {
+  .performance-firefox-fix {
+    scrollbar-width: thin;
+  }
+}
+
+/* ===== PRINT OPTIMIZATIONS ===== */
+
+@media print {
+  .performance-print--hide {
+    display: none !important;
+  }
+  
+  .performance-print--optimize {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .performance-print--full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ===== ACCESSIBILITY OPTIMIZATIONS ===== */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .performance-fade-in,
+  .performance-slide-in,
+  .performance-stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .performance-skeleton {
+    animation: none !important;
+    background: var(--bg-secondary) !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .performance-high-contrast {
+    border: 2px solid currentColor !important;
+  }
+  
+  .performance-high-contrast--text {
+    text-decoration: underline !important;
+  }
+}
+
+/* ===== PERFORMANCE METRICS ===== */
+
+/* Debug classes (remove in production) */
+.performance-debug--layout {
+  outline: 1px solid #ff0000;
+}
+
+.performance-debug--paint {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.performance-debug--expensive {
+  box-shadow: 0 0 0 2px #ff0000;
+}
+
+/* ===== CUSTOM PROPERTIES PARA PERFORMANCE ===== */
+
+:root {
+  /* Performance timing functions */
+  --performance-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --performance-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --performance-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  
+  /* Performance durations */
+  --performance-duration-fast: 150ms;
+  --performance-duration-normal: 300ms;
+  --performance-duration-slow: 500ms;
+  
+  /* Z-index optimization */
+  --performance-z-below: -1;
+  --performance-z-default: 1;
+  --performance-z-above: 10;
+  --performance-z-modal: 1000;
+  --performance-z-max: 9999;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Loading states */
+.performance-loading {
+  position: relative;
+  pointer-events: none;
+  user-select: none;
+}
+
+.performance-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: -0.75rem 0 0 -0.75rem;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--color-primary);
+  border-radius: var(--border-radius-full);
+  animation: performance-spin 1s linear infinite;
+}
+
+@keyframes performance-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Visibility utilities */
+.performance-visible {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.performance-hidden {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.performance-collapsed {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s var(--performance-ease-in-out);
+}
+
+/* Aspect ratio containers */
+.performance-aspect-ratio {
+  position: relative;
+  width: 100%;
+}
+
+.performance-aspect-ratio::before {
+  content: '';
+  display: block;
+  padding-top: calc(100% / (var(--aspect-ratio, 16/9)));
+}
+
+.performance-aspect-ratio > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive video */
+.performance-responsive-video {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+}
+
+.performance-responsive-video iframe,
+.performance-responsive-video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Truncate text with ellipsis */
+.performance-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.performance-truncate--multiline {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-line-clamp: var(--lines, 2);
+  line-clamp: var(--lines, 2);
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  overflow: hidden;
+}

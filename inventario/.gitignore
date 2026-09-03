@@ -1,0 +1,215 @@
+﻿# ====================================================================
+# INVENTARIO SOLUCIONES LÓGICAS - .gitignore
+# ====================================================================
+
+# Archivos de configuración sensibles
+.env
+.env.local
+.env.production
+.env.staging
+config_local.py
+
+# Credenciales y claves
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+license.key
+hardware_key.dat
+*.license
+
+# Archivos de licenciamiento y protección
+obfuscated/
+protected/
+encrypted/
+license_cache
+.license_cache
+
+# ====================================================================
+# PYTHON
+# ====================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Environments
+.venv
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ====================================================================
+# BASES DE DATOS
+# ====================================================================
+*.db
+*.sqlite
+*.sqlite3
+backups/
+dumps/
+
+# ====================================================================
+# LOGS Y TEMPORALES
+# ====================================================================
+logs/
+*.log
+*.log.*
+temp/
+tmp/
+.tmp/
+
+# ====================================================================
+# EDITORES E IDEs
+# ====================================================================
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ====================================================================
+# SISTEMA OPERATIVO
+# ====================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ====================================================================
+# ARCHIVOS DE PRUEBA Y DESARROLLO
+# ====================================================================
+test_data/
+sample_data/
+playground/
+experiments/
+*.test
+*.bak
+*.backup
+
+# ====================================================================
+# ARCHIVOS ESPECÍFICOS DEL PROYECTO
+# ====================================================================
+
+# Archivos de configuración local
+local_config.py
+development.py
+
+# Archivos de datos sensibles
+user_data/
+customer_data/
+production_data/
+
+# Archivos de deployment
+deployment_keys/
+ssl_certificates/
+
+# ====================================================================
+# NODE.JS (si se usa para herramientas de build)
+# ====================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# ====================================================================
+# OTROS
+# ====================================================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/

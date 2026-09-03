@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Probador Rápido de APIs</h2>
+    
+    <button onclick="getRubros()">Ver Rubros</button>
+    <pre id="resultado"></pre>
+
+    <script>
+    async function getRubros() {
+        const res = await fetch('http://localhost:5000/api/rubros');
+        const data = await res.json();
+        document.getElementById('resultado').innerText = 
+            JSON.stringify(data, null, 2);
+    }
+    </script>
+</body>
+</html>

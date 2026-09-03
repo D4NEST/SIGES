@@ -1,0 +1,449 @@
+/* 
+ * Estilos de Layouts
+ * Componentes para estructura general de páginas y contenedores
+ * Convención BEM: .layout-* para componentes de layout
+ */
+
+/* Contenedor principal con márgenes consistentes */
+.layout-container {
+  max-width: 80rem; /* 7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; /* px-4 */
+  padding-right: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .layout-container {
+    padding-left: 1.5rem; /* sm:px-6 */
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-container {
+    padding-left: 2rem; /* lg:px-8 */
+    padding-right: 2rem;
+  }
+}
+
+/* Grid system básico */
+.layout-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.layout-grid--2-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.layout-grid--3-col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.layout-grid--responsive {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Flex utilities */
+.layout-flex {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.layout-flex--column {
+  flex-direction: column;
+}
+
+.layout-flex--wrap {
+  flex-wrap: wrap;
+}
+
+.layout-flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.layout-flex--start {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.layout-flex--end {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.layout-flex--between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layout-flex--around {
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Spacing utilities */
+.layout-spacing--xs {
+  padding: var(--spacing-xs);
+}
+
+.layout-spacing--sm {
+  padding: var(--spacing-sm);
+}
+
+.layout-spacing--md {
+  padding: var(--spacing-md);
+}
+
+.layout-spacing--lg {
+  padding: var(--spacing-lg);
+}
+
+.layout-spacing--xl {
+  padding: var(--spacing-xl);
+}
+
+.layout-spacing--none {
+  padding: 0;
+}
+
+/* Margins */
+.layout-margin--xs {
+  margin: var(--spacing-xs);
+}
+
+.layout-margin--sm {
+  margin: var(--spacing-sm);
+}
+
+.layout-margin--md {
+  margin: var(--spacing-md);
+}
+
+.layout-margin--lg {
+  margin: var(--spacing-lg);
+}
+
+.layout-margin--xl {
+  margin: var(--spacing-xl);
+}
+
+.layout-margin--none {
+  margin: 0;
+}
+
+/* Section styling */
+.layout-section {
+  padding: var(--spacing-xl) 0;
+  position: relative;
+}
+
+.layout-section__header {
+  margin-bottom: var(--spacing-lg);
+  position: relative;
+}
+
+.layout-section__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: var(--line-height-tight);
+  margin: 0;
+  position: relative;
+  transition: color var(--transition-normal);
+}
+
+.layout-section__description {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-sm);
+  line-height: var(--line-height-normal);
+  max-width: 65ch;
+}
+
+/* Card layout - optimizado para performance */
+.layout-card {
+  background: rgba(15, 15, 25, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+}
+.dark .layout-card {
+  background: rgba(10, 10, 20, 0.5);
+}
+.layout-card:hover {
+  border-color: var(--border-color-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.layout-card--interactive {
+  cursor: pointer;
+}
+
+.layout-card--interactive:active {
+  transform: translateY(0);
+  transition-duration: var(--transition-fast);
+}
+
+.layout-card__header {
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.layout-card__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+.layout-card__body {
+  color: var(--text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+.layout-card__body > *:first-child {
+  margin-top: 0;
+}
+
+.layout-card__body > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Utilidades de alineación */
+.layout-align--center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.layout-align--left {
+  text-align: left;
+}
+
+.layout-align--right {
+  text-align: right;
+}
+
+/* Utilidades de visibilidad */
+.layout-hidden {
+  display: none;
+}
+
+.layout-visible {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .layout-hidden--mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .layout-hidden--tablet {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) {
+  .layout-hidden--desktop {
+    display: none;
+  }
+}
+
+/* Utilidades de overflow */
+.layout-overflow--auto {
+  overflow: auto;
+}
+
+.layout-overflow--hidden {
+  overflow: hidden;
+}
+
+.layout-overflow--visible {
+  overflow: visible;
+}
+
+.layout-overflow--scroll {
+  overflow: scroll;
+}
+
+/* Responsive adjustments - optimizado para performance */
+@media (max-width: 768px) {
+  .layout-grid--2-col,
+  .layout-grid--3-col {
+    grid-template-columns: 1fr;
+  }
+  
+  .layout-section {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .layout-section__title {
+    font-size: var(--font-size-xl);
+  }
+  
+  .layout-card {
+    padding: var(--spacing-md);
+  }
+  
+  .layout-flex--mobile-column {
+    flex-direction: column;
+  }
+  
+  .layout-flex--mobile-wrap {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-card {
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm);
+  }
+  
+  .layout-section__title {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* Optimizaciones para dark mode - transiciones suaves */
+.dark .layout-card {
+  background-color: var(--bg-dark-secondary);
+  border-color: var(--border-dark);
+}
+
+.dark .layout-card:hover {
+  border-color: var(--border-dark-hover);
+  box-shadow: var(--shadow-dark);
+}
+
+.dark .layout-card__header {
+  border-color: var(--border-dark);
+}
+
+/* Utilidades de performance */
+.layout-will-change--transform {
+  will-change: transform;
+}
+
+.layout-will-change--opacity {
+  will-change: opacity;
+}
+
+.layout-will-change--contents {
+  will-change: contents;
+}
+
+/* Containment para mejorar performance */
+.layout-contain--layout {
+  contain: layout;
+}
+
+.layout-contain--paint {
+  contain: paint;
+}
+
+.layout-contain--style {
+  contain: style;
+}
+
+.layout-contain--strict {
+  contain: strict;
+}
+
+/* Utilidades de z-index */
+.layout-z--dropdown {
+  z-index: var(--z-dropdown);
+}
+
+.layout-z--sticky {
+  z-index: var(--z-sticky);
+}
+
+.layout-z--fixed {
+  z-index: var(--z-fixed);
+}
+
+.layout-z--modal {
+  z-index: var(--z-modal);
+}
+
+/* Transiciones optimizadas para 60fps */
+.layout-transition--fast {
+  transition: all var(--transition-fast);
+}
+
+.layout-transition--normal {
+  transition: all var(--transition-normal);
+}
+
+.layout-transition--slow {
+  transition: all var(--transition-slow);
+}
+
+.layout-transition--transform {
+  transition: transform var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.layout-transition--opacity {
+  transition: opacity var(--transition-normal) ease-out;
+}
+
+/* Hardware acceleration */
+.layout-gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Loading states */
+.layout-loading {
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.layout-loading--skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: layout-skeleton-loading 1.5s infinite;
+  border-radius: var(--border-radius-md);
+  min-height: 1rem;
+}
+
+@keyframes layout-skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Print optimizations */
+@media print {
+  .layout-section {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .layout-card {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  
+  .layout-hidden--print {
+    display: none !important;
+  }
+}
