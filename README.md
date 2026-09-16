@@ -34,7 +34,7 @@ flowchart TB
     DSS -.-> INFRA
     INV -.-> INFRA
     FAC -.-> INFRA
-
+```
     
 
 🧩 Módulos
